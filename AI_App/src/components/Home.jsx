@@ -31,6 +31,7 @@ const Home = () => {
             });
         }
     };
+    
 
     return (
         <View style={styles.container}>
