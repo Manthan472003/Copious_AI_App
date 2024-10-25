@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
-// import { getAllQuestions } from '../Services/QuestionServices';
-import questionsData from './relatedQuestions.json';
+import { getAllQuestions } from '../Services/QuestionServices';
 
 const Questions = () => {
   const [initialQuestionAnswered, setInitialQuestionAnswered] = useState(false);
@@ -12,7 +11,7 @@ const Questions = () => {
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [relatedQuestions, setRelatedQuestions] = useState([]);
   const [relatedQuestionIndex, setRelatedQuestionIndex] = useState(0);
-  // const [questionsData, setQuestionsData] = useState([]);
+  const [questionsData, setQuestionsData] = useState([]);
 
   // Hard-coded questions
   const initialQuestion = "आपण काय कारणासाठी भेटत आहात?";
@@ -34,16 +33,16 @@ const Questions = () => {
     "संडास लागणे",
   ];
 
-    //   // Fetch sections from backend wrapped in useCallback
-    //   const fetchQuestions = useCallback(async () => {
-    //         const response = await getAllQuestions();
-    //         setQuestionsData(response.data); // Assuming response.data is the array of sections
+      // Fetch sections from backend wrapped in useCallback
+      const fetchQuestions = useCallback(async () => {
+            const response = await getAllQuestions();
+            setQuestionsData(response.data); // Assuming response.data is the array of sections
 
-    // }, []); // Include toast in the dependency array
+    }, []); // Include toast in the dependency array
 
-    // useEffect(() => {
-    //     fetchQuestions();
-    // }, [fetchQuestions]); // No warning here since fetchSections is stable
+    useEffect(() => {
+        fetchQuestions();
+    }, [fetchQuestions]); // No warning here since fetchSections is stable
 
   const handleInitialOptionSelect = (option) => {
     setResponses((prev) => [...prev, { question: initialQuestion, answer: option }]);
