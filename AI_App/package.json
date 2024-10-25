@@ -28,8 +28,11 @@
     "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.8",
+    "@babel/core": "^7.25.9",
     "@babel/eslint-parser": "^7.25.8",
+    "@babel/plugin-transform-class-properties": "^7.25.9",
+    "@babel/plugin-transform-private-methods": "^7.25.9",
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
     "@babel/preset-env": "^7.25.8",
     "@babel/runtime": "^7.20.0",
     "@react-native/babel-preset": "0.75.4",
