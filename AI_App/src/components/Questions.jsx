@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native'; // Import useRoute to access navigation params
-import questionsData from './relatedQuestions.json';
+import { getAllQuestions } from '../Services/QuestionServices';
+
+// import questionsData from './relatedQuestions.json';
 
 const Questions = () => {
   const route = useRoute(); // Get the route object
@@ -15,6 +17,8 @@ const Questions = () => {
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [relatedQuestions, setRelatedQuestions] = useState([]);
   const [relatedQuestionIndex, setRelatedQuestionIndex] = useState(0);
+  const [questionsData, setQuestionsData] = useState([]);
+
 
   const initialQuestion = "आपण काय कारणासाठी भेटत आहात?";
   const initialOptions = [
@@ -49,10 +53,24 @@ const Questions = () => {
     setCurrentQuestionIndex(0);
   };
 
+
+  // Fetch sections from backend wrapped in useCallback
+  const fetchQuestions = useCallback(async () => {
+    const response = await getAllQuestions();
+    setQuestionsData(response.data); // Assuming response.data is the array of sections
+
+  }, []); // Include toast in the dependency array
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [fetchQuestions]); // No warning here since fetchSections is stable
+
   if (!initialQuestionAnswered) {
     return (
       <ScrollView contentContainerStyle={styles.container}>
+        
         <Text style={styles.questionText}>{initialQuestion}</Text>
+        
         {initialOptions.map((option, index) => (
           <TouchableOpacity
             key={index}
@@ -111,7 +129,7 @@ const Questions = () => {
     setResponses(newResponses);
 
     const selectedOption = currentSubQuestion.options.find(opt => typeof opt === 'object' && opt.option === option);
-    
+
     if (selectedOption && selectedOption.related_questions) {
       setRelatedQuestions(selectedOption.related_questions);
       setRelatedQuestionIndex(0);
@@ -144,7 +162,7 @@ const Questions = () => {
 
   const renderRelatedQuestions = () => {
     const relatedQuestion = relatedQuestions[relatedQuestionIndex];
-    
+
     if (!relatedQuestion) return null;
 
     return (
@@ -188,6 +206,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#00796B',
+    fontFamily: 'Poppins-Bold', // Use Poppins-Bold
+
   },
   questionTextBold: {
     fontSize: 20,
