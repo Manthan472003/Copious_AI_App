@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#00796B',
-    fontFamily: 'Poppins-Bold', // Use Poppins-Bold
+    fontFamily: 'Poppins-SemiBold', // Use Poppins-Bold
 
   },
   questionTextBold: {
