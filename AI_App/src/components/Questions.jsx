@@ -3,8 +3,6 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { useRoute } from '@react-navigation/native'; // Import useRoute to access navigation params
 import { getAllQuestions } from '../Services/QuestionServices';
 
-// import questionsData from './relatedQuestions.json';
-
 const Questions = () => {
   const route = useRoute(); // Get the route object
   const { name: patientName, age: patientAge } = route.params; // Extract patient name and age
@@ -18,7 +16,6 @@ const Questions = () => {
   const [relatedQuestions, setRelatedQuestions] = useState([]);
   const [relatedQuestionIndex, setRelatedQuestionIndex] = useState(0);
   const [questionsData, setQuestionsData] = useState([]);
-
 
   const initialQuestion = "आपण काय कारणासाठी भेटत आहात?";
   const initialOptions = [
@@ -53,24 +50,20 @@ const Questions = () => {
     setCurrentQuestionIndex(0);
   };
 
-
-  // Fetch sections from backend wrapped in useCallback
+  // Fetch questions from backend wrapped in useCallback
   const fetchQuestions = useCallback(async () => {
     const response = await getAllQuestions();
-    setQuestionsData(response.data); // Assuming response.data is the array of sections
-
-  }, []); // Include toast in the dependency array
+    setQuestionsData(response.data);
+  }, []);
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions]); // No warning here since fetchSections is stable
+  }, [fetchQuestions]);
 
   if (!initialQuestionAnswered) {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        
         <Text style={styles.questionText}>{initialQuestion}</Text>
-        
         {initialOptions.map((option, index) => (
           <TouchableOpacity
             key={index}
@@ -111,12 +104,14 @@ const Questions = () => {
           <Text style={styles.summaryTitle}>सारांश</Text>
           <Text style={styles.patientInfo}>पेशंटचे नाव : <Text style={styles.highlight}>{patientName}</Text></Text>
           <Text style={styles.patientInfo}>पेशंटचे वय : <Text style={styles.highlight}>{patientAge}</Text></Text>
-          {responses.map((response, index) => (
-            <View key={index} style={styles.responseContainer}>
-              <Text style={styles.questionTextBold}>{`${response.question}:`}</Text>
-              <Text style={styles.answerText}>{response.answer}</Text>
-            </View>
-          ))}
+          <View style={styles.answersContainer}>
+            {responses.map((response, index) => (
+              <View key={index} style={styles.answerCard}>
+                {/* <Text style={styles.questionTextBold}>{response.question}</Text> */}
+                <Text style={styles.answerText}>{response.answer}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       </ScrollView>
     );
@@ -206,17 +201,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#00796B',
-    fontFamily: 'Poppins-SemiBold', // Use Poppins-Bold
-
+    fontFamily: 'Poppins-SemiBold',
   },
   questionTextBold: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#004D40',
+    marginBottom: 5,
   },
   answerText: {
     fontSize: 18,
+    fontWeight: '600',
     color: '#424242',
+     // Optional: makes the answer italic for distinction
   },
   patientInfo: {
     fontSize: 18,
@@ -233,8 +230,21 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     color: '#004D40',
   },
-  responseContainer: {
-    marginVertical: 5,
+  answersContainer: {
+    marginTop: 15,
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+  answerCard: {
+    backgroundColor: '#E8F5E9', // Light green background
+    borderRadius: 8,
+    padding: 15,
+    marginVertical: 8,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 1.5,
   },
   button: {
     backgroundColor: '#3F51B5',
@@ -270,7 +280,7 @@ const styles = StyleSheet.create({
   summaryTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 15,
     color: '#00796B',
     textAlign: 'center',
   },
