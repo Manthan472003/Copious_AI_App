@@ -102,8 +102,14 @@ const Questions = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>सारांश</Text>
-          <Text style={styles.patientInfo}>पेशंटचे नाव : <Text style={styles.highlight}>{patientName}</Text></Text>
-          <Text style={styles.patientInfo}>पेशंटचे वय : <Text style={styles.highlight}>{patientAge}</Text></Text>
+          <View style={styles.patientInfoContainer}>
+            <View style={styles.patientCard}>
+              <Text style={styles.patientInfo}>पेशंटचे नाव: <Text style={styles.highlight}>{patientName}</Text></Text>
+            </View>
+            <View style={styles.patientCard}>
+              <Text style={styles.patientInfo}>पेशंटचे वय: <Text style={styles.highlight}>{patientAge}</Text></Text>
+            </View>
+          </View>
           <View style={styles.answersContainer}>
             {responses.map((response, index) => (
               <View key={index} style={styles.answerCard}>
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#424242',
-     // Optional: makes the answer italic for distinction
+    // Optional: makes the answer italic for distinction
   },
   patientInfo: {
     fontSize: 18,
@@ -241,8 +247,8 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2},
+    shadowColor: '#757575',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 1.5,
   },
@@ -270,7 +276,7 @@ const styles = StyleSheet.create({
   summaryCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    padding: 20,
+    padding: 10,
     marginVertical: 10,
     width: '100%',
     elevation: 3,
@@ -284,6 +290,20 @@ const styles = StyleSheet.create({
     color: '#00796B',
     textAlign: 'center',
   },
+
+  patientInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  patientCard: {
+    flex: 1,
+    marginHorizontal: 5,
+    backgroundColor: '#ebf9ff', // Light green background for cards
+    borderRadius: 8,
+    padding: 10,
+    elevation: 3,
+  }
 });
 
 export default Questions;
